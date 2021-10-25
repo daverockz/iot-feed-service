@@ -16,7 +16,6 @@ class DynamoDB {
   }
 
   async putItem(params) {
-    console.log(process.env.lambda_stage)
     await this._dynamoConnection
       .put({
         TableName: process.env.FEED_TABLE,
