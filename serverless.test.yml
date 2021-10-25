@@ -1,0 +1,53 @@
+- name: stores feed data and sends notification
+  endpoint: { function: createFeed }
+  request:
+    body:
+      deviceId: 96543150-c695-4fdb-89cf-749abf22991
+      temperature: 54.98
+      humidity: 32.43
+      model: Series-V
+      timestamp: 2021-02-01T21:12:09Z
+      sensors: [LIDAR, THERMAL]
+      position:
+        latitude: 47.615694
+        longitude: -122.3359976
+  response:
+    status: 200
+    body:
+      deviceId: 96543150-c695-4fdb-89cf-749abf22991
+      temperature: 54.98
+      humidity: 32.43
+      model: Series-V
+      timestamp: 2021-02-01T21:12:09Z
+      sensors: [LIDAR, THERMAL]
+      position:
+        latitude: 47.615694
+        longitude: -122.3359976
+      notificationPublished: true
+
+- name: stores feed data and skips notification
+  endpoint: { function: createFeed }
+  request:
+    body:
+      deviceId: 96543150-c695-4fdb-89cf-749abf22991
+      temperature: 54.98
+      humidity: 32.43
+      model: Series-V
+      timestamp: 2021-02-01T21:12:09Z
+      sensors: [LIDAR]
+      position:
+        latitude: 47.615694
+        longitude: -122.3359976
+  response:
+    status: 200
+    body:
+      deviceId: 96543150-c695-4fdb-89cf-749abf22991
+      temperature: 54.98
+      humidity: 32.43
+      model: Series-V
+      timestamp: 2021-02-01T21:12:09Z
+      sensors: [LIDAR]
+      position:
+        latitude: 47.615694
+        longitude: -122.3359976
+      notificationPublished: false

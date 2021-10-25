@@ -1,0 +1,19 @@
+version: '3.2'
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    ports:
+      - "9119:8000"
+    networks:
+      - feeds-network
+  sns-mock:
+    image: s12v/sns
+    container_name: sns-mock
+    ports:
+      - "9911:9911"
+    networks:
+      - feeds-network
+
+networks:
+  feeds-network:
+    external: false

@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "deviceId": { "type": "string"},
+    "model": { "type": "string"},
+    "timestamp": { "type": "string"},
+    "sensors": { "type": "array"},
+    "position": { 
+      "type": "object",
+      "properties": {
+        "latitude": { "type": "number"},
+        "longitude": { "type": "number"}
+      },
+      "required": ["latitude", "longitude"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["deviceId", "model", "timestamp", "sensors"],
+  "additionalProperties": true
+}

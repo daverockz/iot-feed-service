@@ -1,0 +1,64 @@
+service: feeds-service
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-dynamodb-local
+  - serverless-plugin-pubsub
+  - serverless-offline-sns
+  - serverless-offline
+
+useDotenv: true
+variablesResolutionMode: 20210326
+
+custom:
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      port: ${env:DYNAMODB_PORT}
+      migrate: true
+  serverless-offline-sns:
+    port: ${env:SNS_PORT}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource:
+        - { "Fn::GetAtt": ["FeedsDynamoDBTable", "Arn" ] }
+  environment:
+    FEED_TABLE: '${env:DYNAMODB_TABLE}-${self:provider.stage}'
+    SNS_TOPIC: '${env:SNS_TOPIC}-${self:provider.stage}'
+
+functions:
+  createFeed:
+    handler: index.handler
+    events:
+      - http: 'POST /v1/feeds'
+
+resources:
+  Resources:
+    FeedsDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: deviceId
+            AttributeType: S
+          -
+            AttributeName: timestamp
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: deviceId
+            KeyType: HASH
+          -
+            AttributeName: timestamp
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: '${self:provider.environment.FEED_TABLE}'

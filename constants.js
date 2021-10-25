@@ -1,0 +1,1 @@
+exports.THERMAL = "THERMAL"
